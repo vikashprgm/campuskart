@@ -9,31 +9,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { type props } from "./item-card"
+import { type Item } from "#/data/types"
 import {  MessageCircle } from "lucide-react"
-export function DialogDemo(meta : props) {
+
+export function DialogDemo(meta : Item) {
   return (
     <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">More Info</Button>
+          <Button variant='outline'>More Info</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-                  {meta.Title}
+                  {meta.title}
             </DialogTitle>
             <DialogDescription>
-              {meta.Desc}
+              {meta.desc}
             </DialogDescription>
-            <img src={meta.Image} className="aspect-square w-full object-cover"/>
             <div>
-              Listed for {meta.Price}
+              Listed for {meta.price}
             </div>
             <div>
-              Posted by <b>{meta.User.Name}</b>, {meta.User.Year} year
+              Posted by <b>{meta.user?.Name}</b>, {meta.user?.created_at} year
             </div>
             <div>
-              Contact : {meta.User.contact}
+              Contact : {meta.user?.contact}
             </div>
           </DialogHeader>
 
@@ -43,7 +43,7 @@ export function DialogDemo(meta : props) {
             </Button>
             {/* <a href={meta.User.contact} target="_blank" rel="noopener noreferrer"> */}
               <Button onClick={()=>{
-                window.open(meta.User.contact,'_blank')
+                window.open(meta.user?.contact,'_blank')
               }}>
                 
                 Chat on Whatsapp

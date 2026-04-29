@@ -9,48 +9,175 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as LogoutRouteImport } from './routes/logout'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotpassRouteImport } from './routes/forgotpass'
+import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProductsIndexRouteImport } from './routes/products/index'
+import { Route as AuthedProductsRouteImport } from './routes/_authed/products'
+import { Route as AuthGoogleRouteImport } from './routes/Auth.google'
+import { Route as AuthCallbackRouteImport } from './routes/Auth.callback'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogoutRoute = LogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotpassRoute = ForgotpassRouteImport.update({
+  id: '/forgotpass',
+  path: '/forgotpass',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthedRoute = AuthedRouteImport.update({
+  id: '/_authed',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductsIndexRoute = ProductsIndexRouteImport.update({
-  id: '/products/',
-  path: '/products/',
+const AuthedProductsRoute = AuthedProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthGoogleRoute = AuthGoogleRouteImport.update({
+  id: '/Auth/google',
+  path: '/Auth/google',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/Auth/callback',
+  path: '/Auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/products/': typeof ProductsIndexRoute
+  '/forgotpass': typeof ForgotpassRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/signup': typeof SignupRoute
+  '/Auth/callback': typeof AuthCallbackRoute
+  '/Auth/google': typeof AuthGoogleRoute
+  '/products': typeof AuthedProductsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/products': typeof ProductsIndexRoute
+  '/forgotpass': typeof ForgotpassRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/signup': typeof SignupRoute
+  '/Auth/callback': typeof AuthCallbackRoute
+  '/Auth/google': typeof AuthGoogleRoute
+  '/products': typeof AuthedProductsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/products/': typeof ProductsIndexRoute
+  '/_authed': typeof AuthedRouteWithChildren
+  '/forgotpass': typeof ForgotpassRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/signup': typeof SignupRoute
+  '/Auth/callback': typeof AuthCallbackRoute
+  '/Auth/google': typeof AuthGoogleRoute
+  '/_authed/products': typeof AuthedProductsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/products/'
+  fullPaths:
+    | '/'
+    | '/forgotpass'
+    | '/login'
+    | '/logout'
+    | '/signup'
+    | '/Auth/callback'
+    | '/Auth/google'
+    | '/products'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/products'
-  id: '__root__' | '/' | '/products/'
+  to:
+    | '/'
+    | '/forgotpass'
+    | '/login'
+    | '/logout'
+    | '/signup'
+    | '/Auth/callback'
+    | '/Auth/google'
+    | '/products'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authed'
+    | '/forgotpass'
+    | '/login'
+    | '/logout'
+    | '/signup'
+    | '/Auth/callback'
+    | '/Auth/google'
+    | '/_authed/products'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProductsIndexRoute: typeof ProductsIndexRoute
+  AuthedRoute: typeof AuthedRouteWithChildren
+  ForgotpassRoute: typeof ForgotpassRoute
+  LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
+  SignupRoute: typeof SignupRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
+  AuthGoogleRoute: typeof AuthGoogleRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgotpass': {
+      id: '/forgotpass'
+      path: '/forgotpass'
+      fullPath: '/forgotpass'
+      preLoaderRoute: typeof ForgotpassRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -58,19 +185,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/products/': {
-      id: '/products/'
+    '/_authed/products': {
+      id: '/_authed/products'
       path: '/products'
-      fullPath: '/products/'
-      preLoaderRoute: typeof ProductsIndexRouteImport
+      fullPath: '/products'
+      preLoaderRoute: typeof AuthedProductsRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/Auth/google': {
+      id: '/Auth/google'
+      path: '/Auth/google'
+      fullPath: '/Auth/google'
+      preLoaderRoute: typeof AuthGoogleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Auth/callback': {
+      id: '/Auth/callback'
+      path: '/Auth/callback'
+      fullPath: '/Auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
+interface AuthedRouteChildren {
+  AuthedProductsRoute: typeof AuthedProductsRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedProductsRoute: AuthedProductsRoute,
+}
+
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProductsIndexRoute: ProductsIndexRoute,
+  AuthedRoute: AuthedRouteWithChildren,
+  ForgotpassRoute: ForgotpassRoute,
+  LoginRoute: LoginRoute,
+  LogoutRoute: LogoutRoute,
+  SignupRoute: SignupRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
+  AuthGoogleRoute: AuthGoogleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

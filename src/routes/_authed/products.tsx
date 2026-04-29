@@ -4,7 +4,7 @@ import { SidebarInset, SidebarProvider, SidebarTrigger } from '#/components/ui/s
 import { createFileRoute } from '@tanstack/react-router'
 import { data } from '#/data/data'
 import Header from '#/components/header'
-export const Route = createFileRoute('/products/')({
+export const Route = createFileRoute('/_authed/products')({
   component: RouteComponent,
 })
 

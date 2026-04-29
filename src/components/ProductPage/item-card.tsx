@@ -7,45 +7,34 @@ import {
   CardAction
 } from "@/components/ui/card"
 import { DialogDemo } from "./Info-card"
+import { Button } from "../ui/button"
+import { ShoppingCart } from "lucide-react"
+import { type Item } from "#/data/types"
 
-export type props = {
-  Price : string,
-  Desc : string,
-  Image : string,
-  Time : string,
-  Link : string,
-  Title : string,
-  User : user
-}
-
-export type user = {
-  Name : string,
-  Id : string,
-  Year : string,
-  contact : string
-}
-
-
-export function CardImage(meta : props) {
+export function CardImage(meta : Item) {
   return (
     <Card className="relative mx-auto w-full max-w-sm pt-0">
       <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
       <img
-        src={meta.Image}
+        src={meta.image_url}
         alt="Event cover"
         className="relative z-20 aspect-video w-full object-cover"
       />
       <CardHeader>
         <CardAction>
-          {meta.Time} ago
+          {meta.created_at} ago
         </CardAction>
-        <CardTitle className="font-bold text-xl">{meta.Price}</CardTitle>
+        <CardTitle className="font-bold text-xl">{meta.price}</CardTitle>
         <CardDescription>
-          {meta.Desc}
+          {meta.desc}
         </CardDescription>
       </CardHeader>
-      <CardFooter>
+      <CardFooter className="justify-between">
         <DialogDemo {...meta}/>
+        <Button variant='ghost'>
+          Save to List
+          <ShoppingCart/>
+        </Button>
       </CardFooter>
     </Card>
   )

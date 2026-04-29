@@ -19,7 +19,8 @@ import {
   Settings,
   User,
 } from "lucide-react";
-
+import { Button } from "#/components/ui/button";
+import { Link } from "@tanstack/react-router";
 type Props = {
   trigger: ReactElement;
   defaultOpen?: boolean;
@@ -60,7 +61,7 @@ const ProfileDropdown = ({ trigger, defaultOpen, align = "end" }: Props) => {
           {/* User Info */}
           <DropdownMenuLabel className="flex items-center gap-4 px-4 py-2.5 font-normal">
             <div className="relative">
-              <Avatar className="size-10">
+              <Avatar className="size-8">
                 <AvatarImage
                   src="https://images.shadcnspace.com/assets/profiles/user-11.jpg"
                   alt="David McMichael"
@@ -71,11 +72,11 @@ const ProfileDropdown = ({ trigger, defaultOpen, align = "end" }: Props) => {
             </div>
 
             <div className="flex flex-col">
-              <span className="text-foreground text-lg font-semibold">
-                David McMichael
+              <span className="text-foreground font-bold text-base">
+                Kevin Durant
               </span>
               <span className="text-muted-foreground text-sm">
-                david.mcmichael@example.com
+                kd@example.com
               </span>
             </div>
           </DropdownMenuLabel>
@@ -83,12 +84,13 @@ const ProfileDropdown = ({ trigger, defaultOpen, align = "end" }: Props) => {
           <DropdownMenuSeparator />
 
           {/* Main Links */}
-          {PROFILE_ITEMS.map(({ label, icon: Icon }) => (
-            <DropdownMenuItem key={label} className={itemClass}>
-              <Icon size={20} className="text-foreground" />
-              <span>{label}</span>
+          
+            <DropdownMenuItem className={itemClass}>
+              <Link to='/user' className="flex justify-center items-center gap-3">
+                  <User></User>
+                  Profile
+              </Link>
             </DropdownMenuItem>
-          ))}
 
           <DropdownMenuSeparator />
 
