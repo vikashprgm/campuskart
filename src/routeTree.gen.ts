@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotpassRouteImport } from './routes/forgotpass'
@@ -22,6 +23,11 @@ import { Route as AuthCallbackRouteImport } from './routes/Auth.callback'
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LogoutRoute = LogoutRouteImport.update({
@@ -69,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/forgotpass': typeof ForgotpassRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
   '/Auth/callback': typeof AuthCallbackRoute
   '/Auth/google': typeof AuthGoogleRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByTo {
   '/forgotpass': typeof ForgotpassRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
   '/Auth/callback': typeof AuthCallbackRoute
   '/Auth/google': typeof AuthGoogleRoute
@@ -91,6 +99,7 @@ export interface FileRoutesById {
   '/forgotpass': typeof ForgotpassRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/onboarding': typeof OnboardingRoute
   '/signup': typeof SignupRoute
   '/Auth/callback': typeof AuthCallbackRoute
   '/Auth/google': typeof AuthGoogleRoute
@@ -103,6 +112,7 @@ export interface FileRouteTypes {
     | '/forgotpass'
     | '/login'
     | '/logout'
+    | '/onboarding'
     | '/signup'
     | '/Auth/callback'
     | '/Auth/google'
@@ -113,6 +123,7 @@ export interface FileRouteTypes {
     | '/forgotpass'
     | '/login'
     | '/logout'
+    | '/onboarding'
     | '/signup'
     | '/Auth/callback'
     | '/Auth/google'
@@ -124,6 +135,7 @@ export interface FileRouteTypes {
     | '/forgotpass'
     | '/login'
     | '/logout'
+    | '/onboarding'
     | '/signup'
     | '/Auth/callback'
     | '/Auth/google'
@@ -136,6 +148,7 @@ export interface RootRouteChildren {
   ForgotpassRoute: typeof ForgotpassRoute
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
+  OnboardingRoute: typeof OnboardingRoute
   SignupRoute: typeof SignupRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   AuthGoogleRoute: typeof AuthGoogleRoute
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/logout': {
@@ -226,6 +246,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotpassRoute: ForgotpassRoute,
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
+  OnboardingRoute: OnboardingRoute,
   SignupRoute: SignupRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   AuthGoogleRoute: AuthGoogleRoute,

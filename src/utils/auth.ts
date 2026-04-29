@@ -93,14 +93,66 @@ export const handleOAuthCallbackFn = createServerFn({ method: 'GET' })
   .inputValidator(z.object({ code: z.string() }))
   .handler(async ({ data }) => {
     const supabase = getSupabaseServerClient()
+    
+    await console.log(data,"data")
+    
     const { data: authData, error } = await supabase.auth.exchangeCodeForSession(data.code)
 
-    if (error || !authData.session?.user?.email) {
+    const name = authData.user?.user_metadata.full_name;
+    const googleid = authData.user?.id;
+    const avatar = authData.user?.user_metadata.avatar_url;
+    const email =authData.user?.email;
+
+      if (error || !authData.session?.user?.email || !name || !googleid || !avatar || !email) {
       throw redirect({ to: '/login', search: { error: 'oauth_failed' } })
     }
+    //search if user's name is updated in DB
+    const {data : existinguser} = await supabase
+      .from('users')
+      .select('id')
+      .eq('id',googleid)
+      .single()
 
     const session = await useAppSession()
     await session.update({ email: authData.session.user.email })
 
+    if(!existinguser) {
+      throw redirect({
+        to: '/onboarding',
+        search: { name, avatar, email }
+      })
+    }
+
     throw redirect({ to: '/' })
+  })
+
+// inject rest info after Google OAuth
+export const completeOnboardingFn = createServerFn({ method: 'POST' })
+  .inputValidator(z.object({
+    name: z.string().min(1),
+    year: z.enum(['1', '2', '3', '4']),
+    contact: z.string().min(1),
+  }))
+  .handler(async ({ data }) => {
+    const session = await useAppSession()
+    const email = session.data.email
+    if (!email) throw redirect({ to: '/login' })
+
+    const supabase = getSupabaseServerClient()
+
+    const { data: authUser } = await supabase.auth.getUser()
+    if (!authUser.user) throw redirect({ to: '/login' })
+
+    const { error } = await supabase
+      .from('users')
+      .insert({
+        id: authUser.user.id,
+        email,
+        name: data.name,
+        year: data.year,
+        contact: data.contact
+      })
+
+    if (error) return { error: true, message: error.message }
+    throw redirect({ to: '/products' })
   })
