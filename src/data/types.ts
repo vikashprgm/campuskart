@@ -9,16 +9,13 @@ export type User = {
 
 
 export type Item = {
-  id : string,
   user_id : string,
   title : string,
-  desc : string,
-  price : number | null,
+  description : string,
+  price : number,
   image_url : string,
   category : Category,
-  is_available : boolean
   created_at: string;
-  user? : User,
 }
 
 export type Category =
@@ -32,3 +29,8 @@ export type Category =
   | "other";
 
   
+export type Filters = {
+  categories: Category[];
+  price: ('free' | 'priced')[];
+}
+

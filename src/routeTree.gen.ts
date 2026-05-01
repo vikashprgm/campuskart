@@ -16,6 +16,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotpassRouteImport } from './routes/forgotpass'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthedUploadRouteImport } from './routes/_authed/upload'
 import { Route as AuthedProductsRouteImport } from './routes/_authed/products'
 import { Route as AuthGoogleRouteImport } from './routes/Auth.google'
 import { Route as AuthCallbackRouteImport } from './routes/Auth.callback'
@@ -54,6 +55,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthedUploadRoute = AuthedUploadRouteImport.update({
+  id: '/upload',
+  path: '/upload',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedProductsRoute = AuthedProductsRouteImport.update({
   id: '/products',
   path: '/products',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/Auth/callback': typeof AuthCallbackRoute
   '/Auth/google': typeof AuthGoogleRoute
   '/products': typeof AuthedProductsRoute
+  '/upload': typeof AuthedUploadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/Auth/callback': typeof AuthCallbackRoute
   '/Auth/google': typeof AuthGoogleRoute
   '/products': typeof AuthedProductsRoute
+  '/upload': typeof AuthedUploadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/Auth/callback': typeof AuthCallbackRoute
   '/Auth/google': typeof AuthGoogleRoute
   '/_authed/products': typeof AuthedProductsRoute
+  '/_authed/upload': typeof AuthedUploadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/Auth/callback'
     | '/Auth/google'
     | '/products'
+    | '/upload'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/Auth/callback'
     | '/Auth/google'
     | '/products'
+    | '/upload'
   id:
     | '__root__'
     | '/'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/Auth/callback'
     | '/Auth/google'
     | '/_authed/products'
+    | '/_authed/upload'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -205,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authed/upload': {
+      id: '/_authed/upload'
+      path: '/upload'
+      fullPath: '/upload'
+      preLoaderRoute: typeof AuthedUploadRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/products': {
       id: '/_authed/products'
       path: '/products'
@@ -231,10 +250,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthedRouteChildren {
   AuthedProductsRoute: typeof AuthedProductsRoute
+  AuthedUploadRoute: typeof AuthedUploadRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedProductsRoute: AuthedProductsRoute,
+  AuthedUploadRoute: AuthedUploadRoute,
 }
 
 const AuthedRouteWithChildren =

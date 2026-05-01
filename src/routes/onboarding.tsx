@@ -3,7 +3,7 @@ import { useServerFn } from '@tanstack/react-start'
 import { useForm } from '@tanstack/react-form'
 import { useState } from 'react'
 import { z } from 'zod'
-import { getCurrentUserFn, completeOnboardingFn } from '../utils/auth'
+import { getSessionData, completeOnboardingFn } from '../utils/auth'
 import { Auth } from '../components/Auth'
 import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
@@ -17,14 +17,15 @@ export const Route = createFileRoute('/onboarding')({
   }).parse,
 
   beforeLoad: async () => {
-    const user = await getCurrentUserFn()
-    if (!user) throw redirect({ to: '/login' })
+    const user = await getSessionData()
+    if (!user?.email) throw redirect({ to: '/login' })
   },
 
   component: OnboardingPage,
 })
 
 function OnboardingPage() {
+
   const { name, avatar, email } = Route.useSearch()
   const completeOnboarding = useServerFn(completeOnboardingFn)
   const [serverError, setServerError] = useState<string | null>(null)

@@ -10,13 +10,13 @@ import { DefaultCatchBoundary } from '../components/DefaultCatchBoundary'
 import { NotFound } from '../components/NotFound'
 import appCss from '../styles.css?url'
 import { seo } from '../utils/seo'
-import { getCurrentUserFn } from '../utils/auth'
+import { getSessionData } from '../utils/auth'
 import { ThemeProvider } from '#/components/ThemeProvider'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { Toaster } from 'sonner'
 
 export const Route = createRootRoute({
   beforeLoad: async () => {
-    const user = await getCurrentUserFn()
+    const user = await getSessionData()
     return { user }
   },
   head: () => ({
@@ -51,6 +51,7 @@ function RootComponent() {
     <ThemeProvider>
       <RootDocument>
         <Outlet />
+        <Toaster richColors position='top-center'/>
       </RootDocument>
     </ThemeProvider>
   )
@@ -64,7 +65,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        <TanStackRouterDevtools position="bottom-right" />
+        {/* <TanStackRouterDevtools position="bottom-right" /> */}
         <Scripts />
       </body>
     </html>

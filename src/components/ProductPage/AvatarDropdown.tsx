@@ -3,6 +3,7 @@ import {
   icons,
   LogOutIcon,
   ShoppingCart,
+  Upload,
 } from "lucide-react"
 
 import {
@@ -22,8 +23,8 @@ import {
 import { Separator } from "../ui/separator"
 import { Link } from "@tanstack/react-router"
 type userinfo = {
-  name : string,
-  email : string
+  name? : string | null,
+  email? : string
 }
 export function DropdownMenuAvatar(meta : userinfo) {
   return (
@@ -36,7 +37,7 @@ export function DropdownMenuAvatar(meta : userinfo) {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="start" className="w-3xs">
         <DropdownMenuGroup>
           <DropdownMenuItem>
               <Avatar>
@@ -44,13 +45,22 @@ export function DropdownMenuAvatar(meta : userinfo) {
                 <AvatarFallback>LR</AvatarFallback>
               </Avatar>
               <div>
-                {meta.name}
+                <div className='font-semibold'>
+                  {meta.name}
+                </div>
+                <div className="text-muted-foreground">
+                  {meta.email}
+                </div>
               </div>
           </DropdownMenuItem>
           <Separator/>
           <DropdownMenuItem>
             <BadgeCheckIcon />
             Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Upload/>
+            Post Ad
           </DropdownMenuItem>
           <DropdownMenuItem>
             <ShoppingCart/>

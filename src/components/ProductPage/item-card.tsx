@@ -4,36 +4,44 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  CardAction
 } from "@/components/ui/card"
 import { DialogDemo } from "./Info-card"
 import { Button } from "../ui/button"
-import { ShoppingCart } from "lucide-react"
+import { Bookmark, IndianRupee } from "lucide-react"
 import { type Item } from "#/data/types"
+import { timeAgo } from "#/utils/utilityFn"
+import { Badge } from "../ui/badge"
 
 export function CardImage(meta : Item) {
   return (
-    <Card className="relative mx-auto w-full max-w-sm pt-0">
-      <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
+    <Card className="relative mx-auto w-full max-w-3xs pt-0 gap-4">
+      <div className="relative">
       <img
         src={meta.image_url}
         alt="Event cover"
-        className="relative z-20 aspect-video w-full object-cover"
-      />
-      <CardHeader>
-        <CardAction>
-          {meta.created_at} ago
-        </CardAction>
-        <CardTitle className="font-bold text-xl">{meta.price}</CardTitle>
-        <CardDescription>
-          {meta.desc}
+        className="relative aspect-video w-full object-cover"
+        />
+        <Badge className="absolute top-2 left-2 capitalize">
+          {meta.category}
+        </Badge>
+      </div>
+      <CardHeader className="px-2">
+        <CardTitle className="flex justify-between items-center">
+          <div className="font-bold flex items-center">
+          {meta.price===0 ? undefined : <IndianRupee size='15'/>}
+          {meta.price=== 0 ? "Free" : meta.price}
+          </div>
+          <span className="text-xs md:text-sm text-muted-foreground">{timeAgo(meta.created_at)}</span>
+        </CardTitle>
+        <CardDescription className="text-xs text-left md:text-sm">
+          {meta.title}
         </CardDescription>
       </CardHeader>
-      <CardFooter className="justify-between">
+      <CardFooter className="justify-between px-2">
         <DialogDemo {...meta}/>
-        <Button variant='ghost'>
-          Save to List
-          <ShoppingCart/>
+        <Button variant='ghost' size='xs'>
+          Save
+          <Bookmark/>
         </Button>
       </CardFooter>
     </Card>

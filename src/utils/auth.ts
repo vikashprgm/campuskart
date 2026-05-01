@@ -23,10 +23,21 @@ export const loginFn = createServerFn({ method: 'POST' })
     }
 
     const session = await useAppSession()
-    await session.update({ email: authData.user.email })
+    await session.update({ email: authData.user.email, name: authData.user.user_metadata.full_name ?? undefined })
 
-    return { success: true }
-  })
+    //check if user table is filled by this user
+    const { data: profile } = await supabase
+      .from('users')
+      .select('id')
+      .eq('id', authData.user.id)
+      .single()
+
+    if (!profile) {
+       return { success: true, redirectTo: '/onboarding', email: authData.user.email }
+    }
+
+    return { success: true, redirectTo: '/'}
+})
 
 export const signupFn = createServerFn({ method: 'POST' })
   .inputValidator(authSchema)
@@ -42,10 +53,11 @@ export const signupFn = createServerFn({ method: 'POST' })
     }
 
     const session = await useAppSession()
-    await session.update({ email: authData.user.email })
+    await session.update({ email: authData.user.email})
 
-    return { success: true }
-  })
+    return { success: true, redirectTo: '/onboarding', email: authData.user.email }
+
+})
 
 export const logoutFn = createServerFn({ method: 'POST' }).handler(async () => {
   const supabase = getSupabaseServerClient()
@@ -57,10 +69,10 @@ export const logoutFn = createServerFn({ method: 'POST' }).handler(async () => {
   throw redirect({ to: '/' })
 })
 
-export const getCurrentUserFn = createServerFn({ method: 'GET' }).handler(async () => {
+export const getSessionData = createServerFn({ method: 'GET' }).handler(async () => {
   const session = await useAppSession()
   if (!session.data.email) return null
-  return { email: session.data.email }
+  return { email: session.data.email , name:session.data.name ?? null}
 })
 
 
@@ -76,7 +88,7 @@ export const getGoogleOAuthUrlFn = createServerFn({ method: 'GET' }).handler(asy
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${siteUrl}/auth/callback`,
+      redirectTo: `${siteUrl}/Auth/callback`,
       queryParams: { prompt: 'select_account' },
     },
   })
@@ -114,7 +126,7 @@ export const handleOAuthCallbackFn = createServerFn({ method: 'GET' })
       .single()
 
     const session = await useAppSession()
-    await session.update({ email: authData.session.user.email })
+    await session.update({ email: authData.user.email , name: authData.user.user_metadata.full_name })
 
     if(!existinguser) {
       throw redirect({
@@ -142,8 +154,9 @@ export const completeOnboardingFn = createServerFn({ method: 'POST' })
 
     const { data: authUser } = await supabase.auth.getUser()
     if (!authUser.user) throw redirect({ to: '/login' })
-
-    const { error } = await supabase
+    
+    // add userinfo to user table
+    const { error: usertableError } = await supabase
       .from('users')
       .insert({
         id: authUser.user.id,
@@ -151,8 +164,9 @@ export const completeOnboardingFn = createServerFn({ method: 'POST' })
         name: data.name,
         year: data.year,
         contact: data.contact
-      })
+    })
 
-    if (error) return { error: true, message: error.message }
+    if (usertableError) return { error: true, message: usertableError.message }
+    
     throw redirect({ to: '/products' })
   })

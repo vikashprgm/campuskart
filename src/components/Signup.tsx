@@ -1,13 +1,14 @@
 import { useRouter, Link } from '@tanstack/react-router'
 import { useServerFn } from '@tanstack/react-start'
 import { useForm } from '@tanstack/react-form'
-import { useState } from 'react'
 import { signupFn } from '@/utils/auth'
 import { Auth } from './Auth'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { Label } from './ui/label'
-
+import { Field } from './ui/field'
+import { FieldError } from './ui/field'
+import { useState } from 'react'
 function GoogleIcon() {
   return (
     <svg
@@ -40,7 +41,6 @@ export function Signup() {
   const router = useRouter()
   const signup = useServerFn(signupFn)
   const [serverError, setServerError] = useState<string | null>(null)
-
   const form = useForm({
     defaultValues: {
       email: '',
@@ -51,13 +51,12 @@ export function Signup() {
       setServerError(null)
       const result = await signup({ data: { email: value.email, password: value.password } })
 
-      if (result?.error) {
-        setServerError(result.message ?? 'Something went wrong')
+      if (!result || result.error) {
+        setServerError(result?.message ?? 'Something went wrong')
         return
       }
-
       await router.invalidate()
-      router.navigate({ to: '/' })
+      router.navigate({ to: '/onboarding', search: { email: result.email } })
     },
   })
 
@@ -107,80 +106,83 @@ export function Signup() {
         <form.Field
           name="email"
           validators={{
-            onBlur: ({ value }) =>
+            onSubmit: ({ value }) =>
               !value ? 'Email is required' : !/\S+@\S+\.\S+/.test(value) ? 'Enter a valid email' : undefined,
           }}
-        >
-          {(field) => (
+          children={(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid
+            
+            return(
             <div className="space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                autoComplete="email"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-              />
-              {field.state.meta.errors.length > 0 && (
-                <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
-              )}
+                <div className=''>
+                  <Field data-invalid={isInvalid}>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    autoComplete="email"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    aria-invalid={isInvalid} />
+                  </Field>
+                  {isInvalid && (<FieldError errors={field.state.meta.errors.map(e => ({ message: e as string }))} />)}
+                </div>             
             </div>
-          )}
-        </form.Field>
+          )}}/>
 
         <form.Field
           name="password"
           validators={{
-            onBlur: ({ value }) =>
+            onSubmit: ({ value }) =>
               !value ? 'Password is required' : value.length < 6 ? 'At least 6 characters' : undefined,
           }}
-        >
-          {(field) => (
+          children={(field) => {
+            const invalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            return(
             <div className="space-y-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                autoComplete="new-password"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-              />
-              {field.state.meta.errors.length > 0 && (
-                <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
-              )}
+              <Field orientation="horizontal" data-invalid={invalid}>
+                <Input
+                  id="password"
+                  placeholder="••••••••"
+                  autoComplete="new-password"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                  aria-invalid={invalid}
+                />
+              </Field>                
+              {invalid && <FieldError errors={field.state.meta.errors.map(e => ({ message: e as string }))} />}
             </div>
-          )}
-        </form.Field>
+          )}}/>
 
         <form.Field
           name="confirmPassword"
           validators={{
-            onBlur: ({ value, fieldApi }) =>
+            onSubmit: ({ value, fieldApi }) =>
               value !== fieldApi.form.getFieldValue('password') ? 'Passwords do not match' : undefined,
           }}
-        >
-          {(field) => (
+          children={(field) => {
+            const invalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            return(
             <div className="space-y-1.5">
-              <Label htmlFor="confirmPassword">Confirm password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="••••••••"
-                autoComplete="new-password"
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-              />
-              {field.state.meta.errors.length > 0 && (
-                <p className="text-xs text-destructive">{field.state.meta.errors[0]}</p>
-              )}
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Field orientation="horizontal" data-invalid={invalid}>
+                <Input
+                  id="confirmPassword"
+                  placeholder="••••••••"
+                  autoComplete="new-password"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                  aria-invalid={invalid}
+                />
+              </Field>                
+              {invalid && <FieldError errors={field.state.meta.errors.map(e => ({ message: e as string }))} />}
             </div>
-          )}
-        </form.Field>
+          )}}/>
 
         {serverError && (
           <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">

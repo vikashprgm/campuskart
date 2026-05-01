@@ -2,12 +2,10 @@ import { createFileRoute, redirect } from '@tanstack/react-router'
 import { handleOAuthCallbackFn } from '../utils/auth'
 import { z } from 'zod'
 
-/**
- * /auth/callback  – landing page after Google redirects back with ?code=…
- *
- * The `code` query param is validated, passed to the server function that
- * exchanges it for a Supabase session, writes the email into the cookie
- * session, and finally redirects to /.
+/*
+ * landing page after Google redirects back
+ * query param is validated, passed to the server function that
+ * exchanges it for a Supabase session,
  */
 export const Route = createFileRoute('/Auth/callback')({
   validateSearch: z.object({
@@ -24,7 +22,7 @@ export const Route = createFileRoute('/Auth/callback')({
     if (!search.code) {
       throw redirect({ to: '/login' })
     }
-    
+
     await handleOAuthCallbackFn({ data: { code: search.code } })
   },
 

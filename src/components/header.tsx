@@ -7,15 +7,22 @@ import i from './logo_text.png'
 import { Link } from "@tanstack/react-router";
 import { ThemeToggle } from "./ThemeToggle";
 import { DropdownMenuAvatar } from "./ProductPage/AvatarDropdown";
-const userinfo = {
-    email : "Kevindurant@gmail.com ",
-    name : "Kevin Durant"
+
+type userdata = {
+  email : string,
+  name : string | null
 }
-const Header = () => {
+
+type HeaderProps = {
+  userdata : userdata | null,
+  sidebarToggle : boolean
+}
+
+const Header = ({userdata , sidebarToggle } : HeaderProps) => {
   return (
         <header className="bg-card sticky top-0 z-50 border-b">
           <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-2 sm:px-6">
-            <SidebarTrigger/>
+            {sidebarToggle && <SidebarTrigger/>}
             <div className="flex items-center gap-4">
               <Link to='/products'>
                 <img
@@ -31,7 +38,7 @@ const Header = () => {
             <div className="flex items-center gap-2.5">
               <ThemeToggle/>
               <NotificationDropdown/>
-              <DropdownMenuAvatar {...userinfo}/>
+              <DropdownMenuAvatar {...userdata}/>
             </div>
           </div>
         </header>

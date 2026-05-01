@@ -10,30 +10,33 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { type Item } from "#/data/types"
-import {  MessageCircle } from "lucide-react"
+import {  IndianRupee, MessageCircle } from "lucide-react"
 
 export function DialogDemo(meta : Item) {
   return (
     <Dialog>
         <DialogTrigger asChild>
-          <Button variant='outline'>More Info</Button>
+          <Button variant='outline' size={'xs'}>More Info</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-                  {meta.title}
+              {meta.title}
             </DialogTitle>
             <DialogDescription>
-              {meta.desc}
+              {meta.description}
             </DialogDescription>
+              
+              <div className="flex items-center gap-1">
+                <div> Listed for </div>
+                <IndianRupee size='12'/>
+                {meta.price}
+              </div>
             <div>
-              Listed for {meta.price}
+              Posted by <b>{meta.user_id}</b>
             </div>
             <div>
-              Posted by <b>{meta.user?.Name}</b>, {meta.user?.created_at} year
-            </div>
-            <div>
-              Contact : {meta.user?.contact}
+              Contact : {meta.user_id}
             </div>
           </DialogHeader>
 
@@ -41,15 +44,12 @@ export function DialogDemo(meta : Item) {
             <Button variant='destructive'>
               Report Ad as Sold
             </Button>
-            {/* <a href={meta.User.contact} target="_blank" rel="noopener noreferrer"> */}
-              <Button onClick={()=>{
-                window.open(meta.user?.contact,'_blank')
+            <Button onClick={()=>{
+                window.open(meta.user_id,'_blank')
               }}>
-                
                 Chat on Whatsapp
                 <MessageCircle/>
               </Button>
-            {/* </a> */}
             <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose>
