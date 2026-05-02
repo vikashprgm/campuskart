@@ -10,8 +10,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import {  IndianRupee, MessageCircle } from "lucide-react"
-import { use, useState } from "react"
+import {  MessageCircle, X } from "lucide-react"
+import {  useState } from "react"
 import { Spinner } from "../ui/spinner"
 
 type usermeta = {
@@ -21,15 +21,15 @@ type usermeta = {
   email : string
 }
 
-export function DialogDemo({title, description, image_url} : {title :string, description :string,image_url :string }) {
+export function DialogDemo({title, description, image_url, userid} : {title :string, description :string,image_url:string, userid:string }) {
   const [meta,setMeta] = useState<usermeta | null>(null)
   const [loading,setLoading] = useState<boolean>(true);
   return (
     <Dialog>
         <DialogTrigger asChild>
-          <Button variant='outline' size={'xs'} onClick={
+          <Button variant='outline' size={'sm'} onClick={
             async()=>{
-              const data =await getuserdata();
+              const data =await getuserdata({data : { userid : userid}});
               setLoading(false);
               setMeta(data)
             }
@@ -53,17 +53,17 @@ export function DialogDemo({title, description, image_url} : {title :string, des
             className="relative aspect-square w-full object-cover rounded-xl"
             />
             <DialogDescription>
-              {description}
+            Description: {description}
             </DialogDescription>
 
             <div>
               Posted by <b>{meta?.name}</b>
             </div>
             <div>
-              <b>Year</b> {meta?.year}
+              Year {meta?.year}
             </div>
             <div>
-              <b>Contact</b> : {meta?.contact}
+              Contact : {meta?.contact}
             </div>
           </DialogHeader>
 
@@ -78,7 +78,10 @@ export function DialogDemo({title, description, image_url} : {title :string, des
                 <MessageCircle/>
               </Button>
             <DialogClose asChild>
-              <Button variant="outline">Close</Button>
+              <Button variant="outline">
+                Close
+                <X/>
+                </Button>
             </DialogClose>
 
           </DialogFooter>

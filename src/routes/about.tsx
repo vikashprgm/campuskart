@@ -1,7 +1,12 @@
+import { Button } from '#/components/ui/button'
 import { Link } from '@tanstack/react-router'
-import { Button } from './ui/button'
+import { createFileRoute } from '@tanstack/react-router'
 
-export function NotFound({ children }: { children?: React.ReactNode }) {
+export const Route = createFileRoute('/about')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
 return <div className='flex flex-col gap-6 items-center justify-center pt-10'>
      <div>
      Bleep Blop Boop, Tung Tung Tung Sahur!

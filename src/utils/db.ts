@@ -2,8 +2,14 @@ import { createServerFn } from "@tanstack/react-start";
 import { getSupabaseServerClient } from "./supabase";
 import { type Category } from "#/data/types";
 
-export const getuserdata = createServerFn({method : 'GET'}).handler(
-  async () => {
+export const getuserdata = createServerFn({method : 'GET'})
+.inputValidator(
+    (data: {
+      userid : string
+    }) => data
+  )
+.handler(
+  async ({data}) => {
       const db = getSupabaseServerClient()
       
       const { data: authUser } = await db.auth.getUser()
@@ -12,7 +18,7 @@ export const getuserdata = createServerFn({method : 'GET'}).handler(
       const { data: profile } = await db
         .from('users')
         .select('name, year, contact, email')
-        .eq('id', authUser.user.id)
+        .eq('id', data.userid)
         .single()
 
       return profile 

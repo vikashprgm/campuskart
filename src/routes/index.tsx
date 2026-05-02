@@ -1,17 +1,17 @@
-import { Button } from '#/components/ui/button'
-import { createFileRoute, Link } from '@tanstack/react-router'
-
+import HeroSection from '#/components/shadcn-space/blocks/hero-01/hero'
+import { createFileRoute } from '@tanstack/react-router'
+import Header from '@/components/shadcn-space/blocks/hero-01/header';
+import Footer from '#/components/footer';
+import { Separator } from '#/components/ui/separator';
 export const Route = createFileRoute('/')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
   return <div>
-    Hello "/"!
-    <Link to='/products'>
-      <Button>
-        See Products
-      </Button>
-    </Link>
+    <Header/>
+    <HeroSection/>
+    <Separator/>
+    <Footer/>
   </div>
 }

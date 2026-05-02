@@ -14,12 +14,16 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotpassRouteImport } from './routes/forgotpass'
+import { Route as FeedbackRouteImport } from './routes/feedback'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthedUploadRouteImport } from './routes/_authed/upload'
 import { Route as AuthedProductsRouteImport } from './routes/_authed/products'
 import { Route as AuthGoogleRouteImport } from './routes/Auth.google'
 import { Route as AuthCallbackRouteImport } from './routes/Auth.callback'
+import { Route as AuthedUserProfileRouteImport } from './routes/_authed/user/profile'
+import { Route as AuthedUserCartRouteImport } from './routes/_authed/user/cart'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -44,6 +48,16 @@ const LoginRoute = LoginRouteImport.update({
 const ForgotpassRoute = ForgotpassRouteImport.update({
   id: '/forgotpass',
   path: '/forgotpass',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeedbackRoute = FeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthedRoute = AuthedRouteImport.update({
@@ -75,9 +89,21 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/Auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthedUserProfileRoute = AuthedUserProfileRouteImport.update({
+  id: '/user/profile',
+  path: '/user/profile',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedUserCartRoute = AuthedUserCartRouteImport.update({
+  id: '/user/cart',
+  path: '/user/cart',
+  getParentRoute: () => AuthedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/feedback': typeof FeedbackRoute
   '/forgotpass': typeof ForgotpassRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
@@ -87,9 +113,13 @@ export interface FileRoutesByFullPath {
   '/Auth/google': typeof AuthGoogleRoute
   '/products': typeof AuthedProductsRoute
   '/upload': typeof AuthedUploadRoute
+  '/user/cart': typeof AuthedUserCartRoute
+  '/user/profile': typeof AuthedUserProfileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/feedback': typeof FeedbackRoute
   '/forgotpass': typeof ForgotpassRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
@@ -99,11 +129,15 @@ export interface FileRoutesByTo {
   '/Auth/google': typeof AuthGoogleRoute
   '/products': typeof AuthedProductsRoute
   '/upload': typeof AuthedUploadRoute
+  '/user/cart': typeof AuthedUserCartRoute
+  '/user/profile': typeof AuthedUserProfileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
+  '/about': typeof AboutRoute
+  '/feedback': typeof FeedbackRoute
   '/forgotpass': typeof ForgotpassRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
@@ -113,11 +147,15 @@ export interface FileRoutesById {
   '/Auth/google': typeof AuthGoogleRoute
   '/_authed/products': typeof AuthedProductsRoute
   '/_authed/upload': typeof AuthedUploadRoute
+  '/_authed/user/cart': typeof AuthedUserCartRoute
+  '/_authed/user/profile': typeof AuthedUserProfileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
+    | '/feedback'
     | '/forgotpass'
     | '/login'
     | '/logout'
@@ -127,9 +165,13 @@ export interface FileRouteTypes {
     | '/Auth/google'
     | '/products'
     | '/upload'
+    | '/user/cart'
+    | '/user/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
+    | '/feedback'
     | '/forgotpass'
     | '/login'
     | '/logout'
@@ -139,10 +181,14 @@ export interface FileRouteTypes {
     | '/Auth/google'
     | '/products'
     | '/upload'
+    | '/user/cart'
+    | '/user/profile'
   id:
     | '__root__'
     | '/'
     | '/_authed'
+    | '/about'
+    | '/feedback'
     | '/forgotpass'
     | '/login'
     | '/logout'
@@ -152,11 +198,15 @@ export interface FileRouteTypes {
     | '/Auth/google'
     | '/_authed/products'
     | '/_authed/upload'
+    | '/_authed/user/cart'
+    | '/_authed/user/profile'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
+  AboutRoute: typeof AboutRoute
+  FeedbackRoute: typeof FeedbackRoute
   ForgotpassRoute: typeof ForgotpassRoute
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
@@ -203,6 +253,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgotpassRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/feedback': {
+      id: '/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authed': {
       id: '/_authed'
       path: ''
@@ -245,17 +309,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authed/user/profile': {
+      id: '/_authed/user/profile'
+      path: '/user/profile'
+      fullPath: '/user/profile'
+      preLoaderRoute: typeof AuthedUserProfileRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/user/cart': {
+      id: '/_authed/user/cart'
+      path: '/user/cart'
+      fullPath: '/user/cart'
+      preLoaderRoute: typeof AuthedUserCartRouteImport
+      parentRoute: typeof AuthedRoute
+    }
   }
 }
 
 interface AuthedRouteChildren {
   AuthedProductsRoute: typeof AuthedProductsRoute
   AuthedUploadRoute: typeof AuthedUploadRoute
+  AuthedUserCartRoute: typeof AuthedUserCartRoute
+  AuthedUserProfileRoute: typeof AuthedUserProfileRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedProductsRoute: AuthedProductsRoute,
   AuthedUploadRoute: AuthedUploadRoute,
+  AuthedUserCartRoute: AuthedUserCartRoute,
+  AuthedUserProfileRoute: AuthedUserProfileRoute,
 }
 
 const AuthedRouteWithChildren =
@@ -264,6 +346,8 @@ const AuthedRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
+  AboutRoute: AboutRoute,
+  FeedbackRoute: FeedbackRoute,
   ForgotpassRoute: ForgotpassRoute,
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,

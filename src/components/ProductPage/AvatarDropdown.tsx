@@ -54,17 +54,23 @@ export function DropdownMenuAvatar(meta : userinfo) {
               </div>
           </DropdownMenuItem>
           <Separator/>
-          <DropdownMenuItem>
-            <BadgeCheckIcon />
-            Profile
+          <DropdownMenuItem asChild>
+            <Link to="/user/profile">
+              <BadgeCheckIcon/>
+              Profile
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Upload/>
-            Post Ad
+          <DropdownMenuItem asChild>
+            <Link to="/upload">
+              <Upload/>
+              Post Ad
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/user/cart">
             <ShoppingCart/>
             Cart
+             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
