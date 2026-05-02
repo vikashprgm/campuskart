@@ -1,3 +1,4 @@
+import { getuserdata } from "#/utils/db"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -9,34 +10,60 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { type Item } from "#/data/types"
 import {  IndianRupee, MessageCircle } from "lucide-react"
+import { use, useState } from "react"
+import { Spinner } from "../ui/spinner"
 
-export function DialogDemo(meta : Item) {
+type usermeta = {
+  name : string,
+  year : string,
+  contact : string,
+  email : string
+}
+
+export function DialogDemo({title, description, image_url} : {title :string, description :string,image_url :string }) {
+  const [meta,setMeta] = useState<usermeta | null>(null)
+  const [loading,setLoading] = useState<boolean>(true);
   return (
     <Dialog>
         <DialogTrigger asChild>
-          <Button variant='outline' size={'xs'}>More Info</Button>
+          <Button variant='outline' size={'xs'} onClick={
+            async()=>{
+              const data =await getuserdata();
+              setLoading(false);
+              setMeta(data)
+            }
+          }>More Info</Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="max-w-sm">
+          { loading ?
+          <>
+          <p className="text-sm text-muted-foreground">Loading...</p>
+            <Spinner/>
+          </> 
+            : 
+          <>
           <DialogHeader>
             <DialogTitle>
-              {meta.title}
+                {title}
             </DialogTitle>
+            <img
+            src={image_url}
+            alt="Event cover"
+            className="relative aspect-square w-full object-cover rounded-xl"
+            />
             <DialogDescription>
-              {meta.description}
+              {description}
             </DialogDescription>
-              
-              <div className="flex items-center gap-1">
-                <div> Listed for </div>
-                <IndianRupee size='12'/>
-                {meta.price}
-              </div>
+
             <div>
-              Posted by <b>{meta.user_id}</b>
+              Posted by <b>{meta?.name}</b>
             </div>
             <div>
-              Contact : {meta.user_id}
+              <b>Year</b> {meta?.year}
+            </div>
+            <div>
+              <b>Contact</b> : {meta?.contact}
             </div>
           </DialogHeader>
 
@@ -45,7 +72,7 @@ export function DialogDemo(meta : Item) {
               Report Ad as Sold
             </Button>
             <Button onClick={()=>{
-                window.open(meta.user_id,'_blank')
+                window.open(`https://wa.me/91${meta?.contact}`, "_blank")
               }}>
                 Chat on Whatsapp
                 <MessageCircle/>
@@ -55,7 +82,9 @@ export function DialogDemo(meta : Item) {
             </DialogClose>
 
           </DialogFooter>
-        </DialogContent>
+        </>
+        }
+      </DialogContent>
     </Dialog>
   )
 }

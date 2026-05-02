@@ -1,9 +1,8 @@
-import {  Plus } from 'lucide-react'
 import { CardImage } from './ProductPage/item-card'
-import { Button } from './ui/button'
 import { Link } from '@tanstack/react-router'
 import { type Item } from '#/data/types'
 import { PackageOpen } from 'lucide-react'
+import PostAdButton from './shadcn-studio/button/button-53'
 
 export function MainSection ({items} : {items: Item[] } ){
   return(
@@ -15,17 +14,14 @@ export function MainSection ({items} : {items: Item[] } ){
           <p className="text-sm">Try adjusting your filters</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-y-4 gap-x-3 pt-3 p-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-3 gap-x-3 pt-3 p-2">
           {items.map((e) => <CardImage key={e.created_at} {...e} />)}
         </div>
       )}
 
-      <div className="fixed bottom-5 right-5">
+      <div className="fixed bottom-7 right-6">
         <Link to="/upload">
-          <Button variant="default" size="lg">
-            <Plus />
-            Post ad
-          </Button>
+        <PostAdButton/>
         </Link>
       </div>
     </div>

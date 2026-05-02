@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "src/components/logo.tsxx", "src/routes/_authed/upload.old"],
+  "include": ["**/*.ts", "**/*.tsx", "src/components/logo.tsxx", "src/routes/_authed/upload.old", "src/components/Upload.tsx.old"],
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
