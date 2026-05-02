@@ -82,8 +82,7 @@ export const getGoogleOAuthUrlFn = createServerFn({ method: 'GET' }).handler(asy
 
   const siteUrl =
     process.env.SITE_URL ??
-    process.env.VITE_SITE_URL ??
-    'http://localhost:3000'
+    process.env.VITE_SITE_URL
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
