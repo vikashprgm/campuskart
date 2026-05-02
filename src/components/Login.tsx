@@ -64,7 +64,7 @@ export function Login() {
       if (result.redirectTo === '/onboarding') {
         router.navigate({ to: '/onboarding', search: { email: result.email } })
       } else {
-        router.navigate({ to: '/' })
+        router.navigate({ to: '/products' })
       }
     },
   })

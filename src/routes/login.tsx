@@ -5,7 +5,7 @@ import { getSessionData } from '../utils/auth'
 export const Route = createFileRoute('/login')({
   beforeLoad: async () => {
     const user = await getSessionData()
-    if (user) throw redirect({ to: '/' })
+    if (user) throw redirect({ to: '/products' })
   },
   component: LoginPage,
 })
