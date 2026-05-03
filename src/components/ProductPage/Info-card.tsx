@@ -13,6 +13,8 @@ import {
 import {  MessageCircle, X } from "lucide-react"
 import {  useState } from "react"
 import { Spinner } from "../ui/spinner"
+import WhatsAppOrionIcon from "../Icons/whatsapp"
+import { Separator } from "../ui/separator"
 
 type usermeta = {
   name : string,
@@ -44,9 +46,10 @@ export function DialogDemo({title, description, image_url, userid} : {title :str
             : 
           <>
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="font-semibold">
                 {title}
             </DialogTitle>
+            <Separator/>
             <img
             src={image_url}
             alt="Event cover"
@@ -60,7 +63,7 @@ export function DialogDemo({title, description, image_url, userid} : {title :str
               Posted by <b>{meta?.name}</b>
             </div>
             <div>
-              Year {meta?.year}
+              Year: {yearformat(meta?.year)}
             </div>
             <div>
               Contact : {meta?.contact}
@@ -75,7 +78,7 @@ export function DialogDemo({title, description, image_url, userid} : {title :str
                 window.open(`https://wa.me/91${meta?.contact}`, "_blank")
               }}>
                 Chat on Whatsapp
-                <MessageCircle/>
+                <WhatsAppOrionIcon/>
               </Button>
             <DialogClose asChild>
               <Button variant="outline">
@@ -90,4 +93,9 @@ export function DialogDemo({title, description, image_url, userid} : {title :str
       </DialogContent>
     </Dialog>
   )
+}
+
+function yearformat (year : string | undefined){
+  const s = ["1st" , "2nd", "3rd", "4th"];
+  return s[parseInt(year ?? "1")-1] ?? null;
 }

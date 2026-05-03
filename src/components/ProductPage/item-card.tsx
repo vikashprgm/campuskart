@@ -14,7 +14,7 @@ import { Badge } from "../ui/badge"
 import { useState } from "react"
 
 export function CardImage(meta : Item) {
-  const [fillheart,setFillheart] = useState<boolean>(false);
+  const [fillheart,setFillheart] = useState<boolean>(true);
   return (
     <Card className="relative mx-auto w-full max-w-3xs pt-0 gap-3">
       <div className="relative">

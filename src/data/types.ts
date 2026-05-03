@@ -34,3 +34,13 @@ export type Filters = {
   price: ('free' | 'priced')[];
 }
 
+
+export type Posts = {
+  title: string,
+  description: string,
+  price: number,
+  image_url: string,
+  created_at: string,
+  category: Category,
+  id : string
+}

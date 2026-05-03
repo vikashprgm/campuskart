@@ -30,6 +30,7 @@ function RouteComponent() {
 
     return categoryMatch && priceMatch;
   });
+  
   return <div>
     <SidebarProvider>
       <AppSidebar filters={filters} setFilters={setFilters}/>

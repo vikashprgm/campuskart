@@ -35,6 +35,23 @@ export const getallpostsFn = createServerFn({method : 'GET'}).handler(
   }
 )
 
+export const getuserpostsFn = createServerFn({method : 'GET'})
+.handler(
+  async () => {
+      const db = getSupabaseServerClient()
+      
+      const { data: authUser } = await db.auth.getUser()
+      if (!authUser.user) return null
+
+      const { data: posts } = await db
+        .from('items')
+        .select('title, description, price, image_url, category,created_at,id')
+        .eq('user_id', authUser.user.id)
+
+      return posts ?? [];
+  }
+)
+
 export const insertItemFn = createServerFn({ method: "POST" })
   .inputValidator(
     (data: {
@@ -64,6 +81,26 @@ export const insertItemFn = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { success: true };
   });
+
+export const removepostFn = createServerFn({method:'GET'})
+  .inputValidator(
+      (data: { id: string }) => data
+  )
+  .handler(async ({ data }) => {
+    const db = getSupabaseServerClient();
+    
+    const { data: authUser } = await db.auth.getUser()
+      if (!authUser.user) return null
+
+    const { data : res } = await db
+      .from('items')
+      .delete()
+      .eq('id', data.id)
+
+      return res;
+  }
+)
+
 
 // cant be a Serverfn, because of File API
 export async function uploadToCloudinary(file: File): Promise<string> {
