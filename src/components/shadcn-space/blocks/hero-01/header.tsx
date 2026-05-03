@@ -41,7 +41,11 @@ const navigationData: NavigationSection[] = [
     {
       title: "Signup",
       href: "/signup",
-    },    
+    },
+    {
+      title: "Logout",
+      href: "/logout",
+    },
     {
       title: "About us",
       href: "/about",

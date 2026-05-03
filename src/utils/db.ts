@@ -120,3 +120,25 @@ export async function uploadToCloudinary(file: File): Promise<string> {
     const json = await res.json();
     return json.secure_url as string;
 }
+
+export const reportadFn = createServerFn({method : 'GET'}).inputValidator(
+  (data : {
+    id : string
+  }) => data
+  )
+  .handler(
+    async ({data})=> {
+      
+      const db = getSupabaseServerClient();
+
+      const { data: authUser } = await db.auth.getUser();
+      if (!authUser.user) throw new Error("Not authenticated");
+
+      const { error } = await db.from("reports").insert({
+        user_id : data.id
+      });
+
+      if (error) throw new Error(error.message);
+      return { success: true };
+    }
+  )

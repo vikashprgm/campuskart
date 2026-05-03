@@ -1,4 +1,4 @@
-import { getuserdata } from "#/utils/db"
+import { getuserdata, reportadFn } from "#/utils/db"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -10,11 +10,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import {  MessageCircle, X } from "lucide-react"
+import {  X } from "lucide-react"
 import {  useState } from "react"
 import { Spinner } from "../ui/spinner"
 import WhatsAppOrionIcon from "../Icons/whatsapp"
 import { Separator } from "../ui/separator"
+import { toast } from "sonner"
 
 type usermeta = {
   name : string,
@@ -71,8 +72,18 @@ export function DialogDemo({title, description, image_url, userid} : {title :str
           </DialogHeader>
 
           <DialogFooter>
-            <Button variant='destructive'>
-              Report Ad as Sold
+            <Button variant='destructive' onClick={
+              async()=>{
+                const res = await reportadFn({data : {id : userid}})
+                if(res.success){
+                  toast.success("Reported ad, for more help contact us")
+                }
+                else{
+                  toast.info("We're solving your issue")
+                }
+              }
+            }>
+              Report Ad
             </Button>
             <Button onClick={()=>{
                 window.open(`https://wa.me/91${meta?.contact}`, "_blank")
