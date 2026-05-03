@@ -48,9 +48,7 @@ export function UserPostCard(meta : Posts) {
         <Button variant='destructive' onClick={
           async()=>{
             await removepostFn({data : {id :meta.id}})
-            toast.info('Deleting Post')
-            const navigate = useNavigate()
-            navigate({to: '/user/profile'})
+            toast.info('Deleting Post, refresh to see changes')
         }}>
           Delete
         </Button>

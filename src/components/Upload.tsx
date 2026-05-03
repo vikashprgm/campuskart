@@ -4,7 +4,7 @@ import * as React from "react";
 import { useState, useCallback } from "react";
 import { Upload, X, Tag, FileText, IndianRupee, Heart } from "lucide-react";
 import { toast } from "sonner";
-import { useRouter } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -268,6 +268,19 @@ export function UploadPage() {
             {isSubmitting ? "Uploading…" : "List item"}
           </Button>
         </form>
+        <div className="pt-5">
+          Note: If you can't upload, try signining out at homepage and sign in again
+        </div>
+        <div className="text-gray-400 pt-5 text-sm" >
+          I expect you not to blow the API, otherwise gotta add captcha, which wont be great experience for rest of users :D
+        </div>
+        <div className="pt-3 flex justify-center">
+        <Link to='/products'>
+              <Button variant='outline'>
+                Go to homepage
+              </Button>
+        </Link>
+        </div>
       </div>
     </div>
   );

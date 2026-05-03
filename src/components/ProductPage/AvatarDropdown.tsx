@@ -4,6 +4,7 @@ import {
   LogOutIcon,
   ShoppingCart,
   Upload,
+  User,
 } from "lucide-react"
 
 import {
@@ -56,7 +57,7 @@ export function DropdownMenuAvatar(meta : userinfo) {
           <Separator/>
           <DropdownMenuItem asChild>
             <Link to="/user/profile">
-              <BadgeCheckIcon/>
+              <User/>
               Profile
             </Link>
           </DropdownMenuItem>
