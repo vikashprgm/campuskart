@@ -24,8 +24,8 @@ export const Route = createRootRoute({
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       ...seo({
-        title: 'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
-        description: 'TanStack Start is a type-safe, client-first, full-stack React framework.',
+        title: 'CampusKart',
+        description: 'Helping seniors clear their baggage and juniors find their essentials',
       }),
     ],
     links: [
@@ -65,7 +65,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        {/* <TanStackRouterDevtools position="bottom-right" /> */}
         <Scripts />
       </body>
     </html>
