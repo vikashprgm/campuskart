@@ -144,7 +144,7 @@ export const handleOAuthCallbackFn = createServerFn({ method: 'GET' })
       })
     }
 
-    throw redirect({ to: '/' })
+    throw redirect({ to: '/products' })
   })
 
 // inject rest info after Google OAuth
