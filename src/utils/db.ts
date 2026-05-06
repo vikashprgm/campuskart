@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getSupabaseServerClient } from "./supabase";
 import { type Category } from "#/data/types";
+import { useAppSession } from "./session";
 
 export const getuserdata = createServerFn({method : 'GET'})
 .inputValidator(
@@ -12,8 +13,9 @@ export const getuserdata = createServerFn({method : 'GET'})
   async ({data}) => {
       const db = getSupabaseServerClient()
       
-      const { data: authUser } = await db.auth.getUser()
-      if (!authUser.user) return null
+      const session = await useAppSession()
+      const userId = session.data.userId
+      if (!userId) return null
 
       const { data: profile } = await db
         .from('users')
@@ -40,13 +42,14 @@ export const getuserpostsFn = createServerFn({method : 'GET'})
   async () => {
       const db = getSupabaseServerClient()
       
-      const { data: authUser } = await db.auth.getUser()
-      if (!authUser.user) return null
+      const session = await useAppSession()
+      const userId = session.data.userId
+      if (!userId) return null
 
       const { data: posts } = await db
         .from('items')
         .select('title, description, price, image_url, category,created_at,id')
-        .eq('user_id', authUser.user.id)
+        .eq('user_id', userId)
 
       return posts ?? [];
   }
@@ -65,11 +68,12 @@ export const insertItemFn = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const db = getSupabaseServerClient();
 
-    const { data: authUser } = await db.auth.getUser();
-    if (!authUser.user) throw new Error("Not authenticated");
+    const session = await useAppSession()
+    const userId = session.data.userId
+    if (!userId) return null
 
     const { error } = await db.from("items").insert({
-      user_id: authUser.user.id,
+      user_id: userId,
       title: data.title,
       description: data.description || null,
       price: data.price,
@@ -89,8 +93,9 @@ export const removepostFn = createServerFn({method:'GET'})
   .handler(async ({ data }) => {
     const db = getSupabaseServerClient();
     
-    const { data: authUser } = await db.auth.getUser()
-      if (!authUser.user) return null
+    const session = await useAppSession()
+    const userId = session.data.userId
+    if (!userId) return null
 
     const { data : res } = await db
       .from('items')
@@ -131,9 +136,10 @@ export const reportadFn = createServerFn({method : 'GET'}).inputValidator(
       
       const db = getSupabaseServerClient();
 
-      const { data: authUser } = await db.auth.getUser();
-      if (!authUser.user) throw new Error("Not authenticated");
-
+      const session = await useAppSession()
+      const userId = session.data.userId
+      if (!userId) return null
+      
       const { error } = await db.from("reports").insert({
         user_id : data.id
       });

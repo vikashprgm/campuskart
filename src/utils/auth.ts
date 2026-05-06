@@ -23,7 +23,11 @@ export const loginFn = createServerFn({ method: 'POST' })
     }
 
     const session = await useAppSession()
-    await session.update({ email: authData.user.email, name: authData.user.user_metadata.full_name ?? undefined })
+    await session.update({ 
+      email: authData.user.email,
+      name: authData.user.user_metadata.full_name ?? undefined,
+      userId : authData.user.id,
+    })
 
     //check if user table is filled by this user
     const { data: profile } = await supabase
@@ -53,7 +57,10 @@ export const signupFn = createServerFn({ method: 'POST' })
     }
 
     const session = await useAppSession()
-    await session.update({ email: authData.user.email})
+    await session.update({ 
+      email: authData.user.email,
+      userId: authData.user.id,
+    })
 
     return { success: true, redirectTo: '/onboarding', email: authData.user.email }
 
@@ -124,7 +131,11 @@ export const handleOAuthCallbackFn = createServerFn({ method: 'GET' })
       .single()
 
     const session = await useAppSession()
-    await session.update({ email: authData.user.email , name: authData.user.user_metadata.full_name })
+    await session.update({
+      email: authData.user.email,
+      name: authData.user.user_metadata.full_name,
+      userId : authData.user.id,
+    })
 
     if(!existinguser) {
       throw redirect({

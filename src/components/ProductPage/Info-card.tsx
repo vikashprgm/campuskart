@@ -75,7 +75,7 @@ export function DialogDemo({title, description, image_url, userid} : {title :str
             <Button variant='destructive' onClick={
               async()=>{
                 const res = await reportadFn({data : {id : userid}})
-                if(res.success){
+                if(res?.success){
                   toast.success("Reported ad, for more help contact us")
                 }
                 else{

@@ -3,6 +3,7 @@ import { useSession } from '@tanstack/react-start/server'
 type SessionData = {
   email?: string
   name? : string
+  userId? : string
 }
 
 export function useAppSession() {

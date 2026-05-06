@@ -1,6 +1,4 @@
 import {
-  BadgeCheckIcon,
-  icons,
   LogOutIcon,
   ShoppingCart,
   Upload,
@@ -58,7 +56,7 @@ export function DropdownMenuAvatar(meta : userinfo) {
           <DropdownMenuItem asChild>
             <Link to="/user/profile">
               <User/>
-              Profile
+              My Posts
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
